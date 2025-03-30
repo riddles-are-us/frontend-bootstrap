@@ -1,0 +1,38 @@
+.welcome-page-container {
+    aspect-ratio: 2560 / 1600;
+    width: 100vw;
+    height: auto;
+    max-width: 100vw;
+    max-height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.welcome-page-background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.welcome-page-panel-connect-wallet-button{
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    height: 40%;
+    width: auto;
+    aspect-ratio: 237 / 42;
+    transform: translate(-50%, -50%);
+}
+
+.welcome-page-panel-play-button{
+    position: absolute;
+    top: 70%;
+    left: 65%;
+    height: 40%;
+    width: auto;
+    aspect-ratio: 152 / 45;
+    transform: translate(-50%, -50%);
+}
