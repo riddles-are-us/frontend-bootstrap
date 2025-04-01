@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import "./WelcomePage.css";
 import background from "../../images/scene/welcome_page/welcome_bg.png";
+import AdjustableImageButton from "../common/AdjustableImageButton";
 
 interface Props {
   isLogin: boolean;
@@ -49,12 +50,19 @@ const WelcomePage = ({ isLogin, onLogin, onStartGame }: Props) => {
           <p> Play </p>
         </button>
       ) : (
-        <button
-          className="welcome-page-panel-connect-wallet-button"
-          onClick={onClickConnectWallet}
-        >
-          <p> Connect Wallet </p>
-        </button>
+        // <button
+        //   className="welcome-page-panel-connect-wallet-button"
+        //   onClick={onClickConnectWallet}
+        // >
+        //   <p> Connect Wallet </p>
+        // </button>
+        <div className="welcome-page-panel-connect-wallet-button">
+          <AdjustableImageButton
+            text={"Connect Wallet"}
+            onClick={onClickConnectWallet}
+            isDisabled={false}
+          />
+        </div>
       )}
     </div>
   );

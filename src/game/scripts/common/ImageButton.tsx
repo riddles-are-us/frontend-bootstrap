@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./ImageButton.css";
+import ElementButton from "./ElementButton";
 
 interface Props {
   isDisabled: boolean;
@@ -18,56 +19,15 @@ const ImageButton = ({
   disabledImagePath,
   onClick,
 }: Props) => {
-  const [isClicked, setIsClicked] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-
-  const handleMouseDown = () => {
-    if (!isDisabled) {
-      setIsClicked(true);
-    }
-  };
-
-  const handleMouseUp = () => {
-    if (!isDisabled) {
-      setIsClicked(false);
-      onClick();
-    }
-  };
-
-  const handleMouseLeave = () => {
-    if (!isDisabled) {
-      setIsClicked(false);
-      setIsHovered(false);
-    }
-  };
-
-  const handleMouseEnter = () => {
-    if (!isDisabled) {
-      setIsHovered(true);
-    }
-  };
-
   return (
-    <button
-      className={isDisabled ? "image-button-disabled" : "image-button"}
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseLeave}
-      onMouseEnter={handleMouseEnter}
-      disabled={isDisabled}
-    >
-      <img
-        src={
-          isDisabled
-            ? disabledImagePath
-            : isClicked
-            ? clickedImagePath
-            : isHovered
-            ? hoverImagePath
-            : defaultImagePath
-        }
-      />
-    </button>
+    <ElementButton
+      isDisabled={isDisabled}
+      defaultElement={<img className="image-button" src={defaultImagePath} />}
+      hoverElement={<img className="image-button" src={hoverImagePath} />}
+      clickedElement={<img className="image-button" src={clickedImagePath} />}
+      disabledElement={<img className="image-button" src={disabledImagePath} />}
+      onClick={onClick}
+    />
   );
 };
 

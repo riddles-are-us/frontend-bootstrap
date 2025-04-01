@@ -8,6 +8,7 @@
     top: 0;
     left: 50%;
     transform: translateX(-50%);
+    user-select: none;
 }
 
 .welcome-page-background {
@@ -15,15 +16,17 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    pointer-events: none;
+    user-select: none;
 }
 
 .welcome-page-panel-connect-wallet-button{
     position: absolute;
     top: 30%;
     left: 50%;
-    width: 10%;
+    width: 20%;
     height: auto;
-    aspect-ratio: 152 / 45;
+    aspect-ratio: 250 / 45;
     transform: translate(-50%, -50%);
 }
 
