@@ -30,6 +30,10 @@ const WelcomePage = ({ isLogin, onLogin, onStartGame }: Props) => {
     };
   }, []);
 
+  const onClickConnectWallet = () => {
+    onLogin();
+  };
+
   const onClickPlay = () => {
     onStartGame();
   };
@@ -38,9 +42,19 @@ const WelcomePage = ({ isLogin, onLogin, onStartGame }: Props) => {
     <div className="welcome-page-container">
       <img className="welcome-page-background" src={background} />
       {isLogin ? (
-        <button className="welcome-page-panel-play-button" />
+        <button
+          className="welcome-page-panel-play-button"
+          onClick={onClickPlay}
+        >
+          <p> Play </p>
+        </button>
       ) : (
-        <button className="welcome-page-panel-connect-wallet-button" />
+        <button
+          className="welcome-page-panel-connect-wallet-button"
+          onClick={onClickConnectWallet}
+        >
+          <p> Connect Wallet </p>
+        </button>
       )}
     </div>
   );
