@@ -1,4 +1,4 @@
-.adjustable-image-button-container {
+.adjustable-image-text-button-container {
     position: absolute;
     left: 0;
     top: 0;
@@ -6,14 +6,14 @@
     height: 100%;
 }
 
-.adjustable-image-button-element-container {
+.adjustable-image-text-button-element-container {
     position: absolute;
     pointer-events: none;
     user-select: none;
     top: 0;
 }
 
-.adjustable-image-button-text {
+.adjustable-image-text-button-text {
     position: absolute;
     left: 50%;
     top: 50%;

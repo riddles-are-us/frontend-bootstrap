@@ -1,29 +1,48 @@
 import React, { useRef, useEffect, useState } from "react";
-import ImageButton from "./ImageButton";
-import leftNormalImage from "../../images/buttons/template/left.png";
-import midNormalImage from "../../images/buttons/template/mid.png";
-import rightNormalImage from "../../images/buttons/template/right.png";
-
-import leftHoverImage from "../../images/buttons/template/left_hv.png";
-import midHoverImage from "../../images/buttons/template/mid_hv.png";
-import rightHoverImage from "../../images/buttons/template/right_hv.png";
-
-import leftClickImage from "../../images/buttons/template/left_click.png";
-import midClickImage from "../../images/buttons/template/mid_click.png";
-import rightClickImage from "../../images/buttons/template/right_click.png";
-import "./AdjustableImageButton.css";
+import "./AdjustableImageTextButton.css";
 import ElementButton from "./ElementButton";
 
 interface Props {
   text: string;
   onClick: () => void;
   isDisabled: boolean;
+  leftRatio: number;
+  rightRatio: number;
+  leftNormalImage: string;
+  midNormalImage: string;
+  rightNormalImage: string;
+  leftHoverImage: string;
+  midHoverImage: string;
+  rightHoverImage: string;
+  leftClickImage: string;
+  midClickImage: string;
+  rightClickImage: string;
+  leftDisabledImage: string;
+  midDisabledImage: string;
+  rightDisabledImage: string;
+  fonrSizeRatio: number;
 }
 
-const AdjustableImageButton = ({ text, onClick, isDisabled }: Props) => {
-  const leftRatio = 17 / 42;
-  const rightRatio = 16 / 42;
-
+const AdjustableImageTextButton = ({
+  text,
+  onClick,
+  isDisabled,
+  leftRatio,
+  rightRatio,
+  leftNormalImage,
+  midNormalImage,
+  rightNormalImage,
+  leftHoverImage,
+  midHoverImage,
+  rightHoverImage,
+  leftClickImage,
+  midClickImage,
+  rightClickImage,
+  leftDisabledImage,
+  midDisabledImage,
+  rightDisabledImage,
+  fonrSizeRatio,
+}: Props) => {
   const containerRef = useRef<HTMLParagraphElement>(null);
   const [containerWidth, setContainerWidth] = useState<number>(0);
   const [containerHeight, setContainerHeight] = useState<number>(0);
@@ -33,7 +52,7 @@ const AdjustableImageButton = ({ text, onClick, isDisabled }: Props) => {
     if (containerRef.current) {
       setContainerWidth(containerRef.current.offsetWidth);
       setContainerHeight(containerRef.current.offsetHeight);
-      setFontSize(containerRef.current.offsetHeight / 2);
+      setFontSize((containerRef.current.offsetHeight * fonrSizeRatio) / 2);
     }
   };
 
@@ -49,7 +68,7 @@ const AdjustableImageButton = ({ text, onClick, isDisabled }: Props) => {
   const getText = () => {
     return (
       <p
-        className="adjustable-image-button-text"
+        className="adjustable-image-text-button-text"
         style={{
           fontSize: `${fontSize}px`,
         }}
@@ -77,17 +96,17 @@ const AdjustableImageButton = ({ text, onClick, isDisabled }: Props) => {
       <>
         <img
           src={midImage}
-          className="adjustable-image-button-element-container"
+          className="adjustable-image-text-button-element-container"
           style={{ width: middleWidth, height: middleHeight, left: middleLeft }}
         />
         <img
           src={leftImage}
-          className="adjustable-image-button-element-container"
+          className="adjustable-image-text-button-element-container"
           style={{ width: leftWidth, height: leftHeight, left: 0 }}
         />
         <img
           src={rightImage}
-          className="adjustable-image-button-element-container"
+          className="adjustable-image-text-button-element-container"
           style={{ width: rightWidth, height: rightHeight, right: 0 }}
         />
         {getText()}
@@ -96,7 +115,7 @@ const AdjustableImageButton = ({ text, onClick, isDisabled }: Props) => {
   };
 
   return (
-    <div ref={containerRef} className="adjustable-image-button-container">
+    <div ref={containerRef} className="adjustable-image-text-button-container">
       <ElementButton
         isDisabled={isDisabled}
         defaultElement={getElement(
@@ -115,9 +134,9 @@ const AdjustableImageButton = ({ text, onClick, isDisabled }: Props) => {
           rightClickImage
         )}
         disabledElement={getElement(
-          leftClickImage,
-          midClickImage,
-          rightClickImage
+          leftDisabledImage,
+          midDisabledImage,
+          rightDisabledImage
         )}
         onClick={onClick}
       />
@@ -125,4 +144,4 @@ const AdjustableImageButton = ({ text, onClick, isDisabled }: Props) => {
   );
 };
 
-export default AdjustableImageButton;
+export default AdjustableImageTextButton;

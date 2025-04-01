@@ -1,17 +1,16 @@
 import React from "react";
 import ImageButton from "../common/ImageButton";
-import buttonImage from "../../images/buttons/template/confirm.png";
-import buttonHoverImage from "../../images/buttons/template/confirm_hover.png";
-import buttonClickImage from "../../images/buttons/template/confirm_click.png";
-import "./TemplateButton.css";
+import buttonImage from "../../images/buttons/template_image/withdraw_button.png";
+import buttonHoverImage from "../../images/buttons/template_image/withdraw_button_hv.png";
+import buttonClickImage from "../../images/buttons/template_image/withdraw_button_click.png";
 
 interface Props {
   onClick: () => void;
 }
 
-const TemplateButton = ({ onClick }: Props) => {
+const TemplateImageButton = ({ onClick }: Props) => {
   return (
-    <div className="template-button-scale">
+    <div style={{ width: 80, height: 30 }}>
       <ImageButton
         isDisabled={false}
         defaultImagePath={buttonImage}
@@ -24,4 +23,4 @@ const TemplateButton = ({ onClick }: Props) => {
   );
 };
 
-export default TemplateButton;
+export default TemplateImageButton;

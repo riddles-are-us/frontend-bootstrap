@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import "./WelcomePage.css";
 import background from "../../images/scene/welcome_page/welcome_bg.png";
-import AdjustableImageButton from "../common/AdjustableImageButton";
+import TemplateAdjustableImageTextButton from "../template/TemplateAdjustableImageTextButton";
 
 interface Props {
   isLogin: boolean;
@@ -43,21 +43,16 @@ const WelcomePage = ({ isLogin, onLogin, onStartGame }: Props) => {
     <div className="welcome-page-container">
       <img className="welcome-page-background" src={background} />
       {isLogin ? (
-        <button
-          className="welcome-page-panel-play-button"
-          onClick={onClickPlay}
-        >
-          <p> Play </p>
-        </button>
+        <div className="welcome-page-panel-play-button">
+          <TemplateAdjustableImageTextButton
+            text={"Play"}
+            onClick={onClickPlay}
+            isDisabled={false}
+          />
+        </div>
       ) : (
-        // <button
-        //   className="welcome-page-panel-connect-wallet-button"
-        //   onClick={onClickConnectWallet}
-        // >
-        //   <p> Connect Wallet </p>
-        // </button>
         <div className="welcome-page-panel-connect-wallet-button">
-          <AdjustableImageButton
+          <TemplateAdjustableImageTextButton
             text={"Connect Wallet"}
             onClick={onClickConnectWallet}
             isDisabled={false}
