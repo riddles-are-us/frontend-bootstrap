@@ -12,7 +12,7 @@ export enum UIState{
 	ErrorPopup,
 }
 
-interface PropertiesUI {
+export interface PropertiesUI {
 	uiState: UIState;
 }
 
@@ -20,8 +20,8 @@ const initialState: PropertiesUI = {
 	uiState: UIState.WelcomePage,
 };
 
-export const uiuxSlice = createSlice({
-	name: 'properties',
+export const uiSlice = createSlice({
+	name: 'ui',
 	initialState,
 	reducers: {
 		setUIState: (state, action) => {
@@ -32,5 +32,5 @@ export const uiuxSlice = createSlice({
 
 export const selectUIState = (state: RootState) => state.uiux.uiState;
 
-export const { setUIState } = uiuxSlice.actions;
-export default uiuxSlice.reducer;
+export const { setUIState } = uiSlice.actions;
+export default uiSlice.reducer;

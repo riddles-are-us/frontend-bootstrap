@@ -63,7 +63,7 @@ const AdjustableImageTextButton = ({
     return () => {
       window.removeEventListener("resize", adjustSize);
     };
-  }, []);
+  }, [text]);
 
   const getText = () => {
     return (

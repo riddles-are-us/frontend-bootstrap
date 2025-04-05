@@ -15,7 +15,7 @@ interface Props {
   isDisabled: boolean;
 }
 
-const template_adjustable_image_textAdjustableImageTextButton = ({
+const TemplateAdjustableImageTextButton = ({
   text,
   onClick,
   isDisabled,
@@ -47,4 +47,4 @@ const template_adjustable_image_textAdjustableImageTextButton = ({
   );
 };
 
-export default template_adjustable_image_textAdjustableImageTextButton;
+export default TemplateAdjustableImageTextButton;
