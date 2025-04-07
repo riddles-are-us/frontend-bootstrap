@@ -1,7 +1,6 @@
 import "./App.css";
-
-// import "./style.scss";
 import { LoadingController } from "./game/scripts/scene/LoadingController";
+import "./fonts/fonts.css";
 
 function App() {
   return <LoadingController />;

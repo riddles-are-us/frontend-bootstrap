@@ -1,9 +1,10 @@
 import React, { useRef, useEffect, useState } from "react";
 import "./AdjustableImageTextButton.css";
 import ElementButton from "./ElementButton";
+import HorizontalExtendableImage from "./HorizontalExtendableImage";
 
 interface Props {
-  text: string;
+  id?: number;
   onClick: () => void;
   isDisabled: boolean;
   leftRatio: number;
@@ -20,11 +21,11 @@ interface Props {
   leftDisabledImage: string;
   midDisabledImage: string;
   rightDisabledImage: string;
-  fonrSizeRatio: number;
+  getText: (fontBaseSize: number) => JSX.Element;
 }
 
 const AdjustableImageTextButton = ({
-  text,
+  id = 0,
   onClick,
   isDisabled,
   leftRatio,
@@ -41,18 +42,14 @@ const AdjustableImageTextButton = ({
   leftDisabledImage,
   midDisabledImage,
   rightDisabledImage,
-  fonrSizeRatio,
+  getText,
 }: Props) => {
   const containerRef = useRef<HTMLParagraphElement>(null);
-  const [containerWidth, setContainerWidth] = useState<number>(0);
-  const [containerHeight, setContainerHeight] = useState<number>(0);
-  const [fontSize, setFontSize] = useState<number>(0);
+  const [baseFontSize, setBaseFontSize] = useState<number>(0);
 
   const adjustSize = () => {
     if (containerRef.current) {
-      setContainerWidth(containerRef.current.offsetWidth);
-      setContainerHeight(containerRef.current.offsetHeight);
-      setFontSize((containerRef.current.offsetHeight * fonrSizeRatio) / 2);
+      setBaseFontSize(containerRef.current.offsetHeight / 2);
     }
   };
 
@@ -63,53 +60,24 @@ const AdjustableImageTextButton = ({
     return () => {
       window.removeEventListener("resize", adjustSize);
     };
-  }, [text]);
-
-  const getText = () => {
-    return (
-      <p
-        className="adjustable-image-text-button-text"
-        style={{
-          fontSize: `${fontSize}px`,
-        }}
-      >
-        {text}
-      </p>
-    );
-  };
+  }, [id]);
 
   const getElement = (
     leftImage: string,
     midImage: string,
     rightImage: string
   ) => {
-    const eps = 0.05;
-    const leftHeight = containerHeight;
-    const leftWidth = leftHeight * leftRatio;
-    const rightHeight = containerHeight;
-    const rightWidth = rightHeight * rightRatio;
-    const middleHeight = containerHeight;
-    const middleWidth = containerWidth - (leftWidth + rightWidth) * (1 - eps);
-    const middleLeft = leftWidth * (1 - eps);
-
     return (
       <>
-        <img
-          src={midImage}
-          className="adjustable-image-text-button-element-container"
-          style={{ width: middleWidth, height: middleHeight, left: middleLeft }}
+        <HorizontalExtendableImage
+          id={id}
+          leftRatio={leftRatio}
+          rightRatio={rightRatio}
+          leftImage={leftImage}
+          midImage={midImage}
+          rightImage={rightImage}
         />
-        <img
-          src={leftImage}
-          className="adjustable-image-text-button-element-container"
-          style={{ width: leftWidth, height: leftHeight, left: 0 }}
-        />
-        <img
-          src={rightImage}
-          className="adjustable-image-text-button-element-container"
-          style={{ width: rightWidth, height: rightHeight, right: 0 }}
-        />
-        {getText()}
+        {getText(baseFontSize)}
       </>
     );
   };

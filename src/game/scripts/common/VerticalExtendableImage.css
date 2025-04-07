@@ -1,4 +1,4 @@
-.adjustable-image-text-button-container {
+.vertical-extendable-image-container {
   position: absolute;
   left: 0;
   top: 0;
@@ -6,9 +6,9 @@
   height: 100%;
 }
 
-.adjustable-image-text-button-element-container {
+.vertical-extendable-image-element-container {
   position: absolute;
   pointer-events: none;
   user-select: none;
-  top: 0;
+  left: 0;
 }
