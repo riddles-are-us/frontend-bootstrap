@@ -22,7 +22,7 @@ export const store = configureStore({
   reducer: {
     account: AccountSliceReducer,
     state: stateReducer,
-    uiux: uiReducer,
+    ui: uiReducer,
   },
 });
 

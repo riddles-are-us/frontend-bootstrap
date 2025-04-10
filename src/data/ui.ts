@@ -1,7 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../app/store';
 
-export enum UIState{
+export enum UIStateType{
 	Idle,
 	WelcomePage,
 	QueryWithdraw,
@@ -10,27 +10,39 @@ export enum UIState{
 	DepositPopup,
 	ConfirmPopup,
 	ErrorPopup,
+  TemplatePopup,
 }
+
+export type UIState = 
+  { type: UIStateType.Idle} |
+  { type: UIStateType.WelcomePage} |
+  { type: UIStateType.TemplatePopup} |
+  { type: UIStateType.QueryWithdraw} |
+  { type: UIStateType.WithdrawPopup} |
+  { type: UIStateType.QueryDeposit} |
+  { type: UIStateType.DepositPopup} |
+  { type: UIStateType.ConfirmPopup} |
+  { type: UIStateType.ErrorPopup};
 
 export interface PropertiesUI {
 	uiState: UIState;
 }
 
 const initialState: PropertiesUI = {
-	uiState: UIState.WelcomePage,
+	uiState: {type: UIStateType.WelcomePage},
 };
 
 export const uiSlice = createSlice({
 	name: 'ui',
 	initialState,
 	reducers: {
-		setUIState: (state, action) => {
-			state.uiState = action.payload.uIState;
-		},
+    setUIState: (state, d: PayloadAction<UIState>) => {
+      state.uiState = d.payload;
+    },
 	},
 });
 
-export const selectUIState = (state: RootState) => state.uiux.uiState;
+export const selectUIState = (state: RootState) => state.ui.uiState;
 
 export const { setUIState } = uiSlice.actions;
 export default uiSlice.reducer;

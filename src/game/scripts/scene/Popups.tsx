@@ -1,18 +1,12 @@
 import React from "react";
 import { useAppSelector } from "../../../app/hooks";
-import { selectUIState, UIState } from "../../../data/ui";
+import { selectUIState, UIStateType } from "../../../data/ui";
+import TemplatePopup from "../template/TemplatePopup";
 
 const Popups = () => {
   const uIState = useAppSelector(selectUIState);
-  // const showWithdrawPopup = uIState == UIState.WithdrawPopup;
-  // const showDepositPopup = uIState == UIState.DepositPopup;
 
-  return (
-    <>
-      {/* {showWithdrawPopup && <WithdrawPopup />}
-      {showDepositPopup && <DepositPopup />} */}
-    </>
-  );
+  return <>{uIState.type == UIStateType.TemplatePopup && <TemplatePopup />}</>;
 };
 
 export default Popups;
