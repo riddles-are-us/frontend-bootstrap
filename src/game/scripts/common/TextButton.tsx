@@ -3,6 +3,7 @@ import "./TextButton.css";
 import ElementButton from "./ElementButton";
 
 interface Props {
+  id?: number;
   isDisabled: boolean;
   text: string;
   fontRatio: number;
@@ -15,6 +16,7 @@ interface Props {
 }
 
 const TextButton = ({
+  id = 0,
   isDisabled,
   text,
   fontRatio,
@@ -41,7 +43,7 @@ const TextButton = ({
     return () => {
       window.removeEventListener("resize", adjustSize);
     };
-  }, []);
+  }, [textRef.current, id]);
 
   const getElement = (color: string) => {
     return (

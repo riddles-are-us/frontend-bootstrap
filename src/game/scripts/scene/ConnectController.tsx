@@ -64,8 +64,10 @@ export function ConnectController({
   }, []);
 
   useEffect(() => {
-    if (connectState == ConnectState.Init) {
-      dispatch(setConnectState(ConnectState.OnStart));
+    if (l1account) {
+      if (connectState == ConnectState.Init) {
+        dispatch(setConnectState(ConnectState.OnStart));
+      }
     }
   }, [l1account]);
 

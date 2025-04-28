@@ -4,9 +4,7 @@ import { RootState } from '../app/store';
 export enum UIStateType{
 	Idle,
 	WelcomePage,
-	QueryWithdraw,
 	WithdrawPopup,
-	QueryDeposit,
 	DepositPopup,
 	ConfirmPopup,
 	ErrorPopup,
@@ -17,9 +15,7 @@ export type UIState =
   { type: UIStateType.Idle} |
   { type: UIStateType.WelcomePage} |
   { type: UIStateType.TemplatePopup} |
-  { type: UIStateType.QueryWithdraw} |
   { type: UIStateType.WithdrawPopup} |
-  { type: UIStateType.QueryDeposit} |
   { type: UIStateType.DepositPopup} |
   { type: UIStateType.ConfirmPopup} |
   { type: UIStateType.ErrorPopup};

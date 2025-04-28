@@ -48,6 +48,7 @@ const TemplateAdjustableImageTextButton = ({
           color: color,
           fontFamily: fontFamily,
           fontSize: `${fontSize}px`,
+          whiteSpace: "pre",
           ...(isBold ? { fontWeight: "bold" } : {}),
         }}
       >
