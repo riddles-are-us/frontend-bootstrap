@@ -25,7 +25,7 @@ const TemplateImageTextButton = ({
     const fontSize = fontBaseSize * fontSizeRatio;
     return (
       <p
-        className="adjustable-image-text-button-text"
+        className="image-text-button-text"
         style={{
           position: "absolute",
           left: "50%",
