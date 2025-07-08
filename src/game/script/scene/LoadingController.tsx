@@ -6,7 +6,7 @@ import {
   selectNullableUserState,
 } from "../../../data/state";
 import Gameplay from "./Gameplay";
-import { queryInitialState } from "zkwasm-minirollup-browser/src/connect";
+import { queryInitialState } from "zkwasm-minirollup-browser/";
 import { ConnectState } from "zkwasm-minirollup-browser";
 import { ConnectController } from "./ConnectController";
 

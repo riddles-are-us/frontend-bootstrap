@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, useState, MouseEvent } from "react";
 import Popups from "./Popups";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { AccountSlice } from "zkwasm-minirollup-browser";
+import { useWalletContext } from "zkwasm-minirollup-browser";
 import "./Gameplay.css";
 import { selectUserState } from "../../../data/state";
-import { sendTransaction } from "zkwasm-minirollup-browser/src/connect";
+import { sendTransaction } from "zkwasm-minirollup-browser/";
 import { selectUIState, UIState } from "../../../data/ui";
 
 const Gameplay = () => {
   const dispatch = useAppDispatch();
-  const l2account = useAppSelector(AccountSlice.selectL2Account);
+  const { l2Account } = useWalletContext();
   const userState = useAppSelector(selectUserState);
   const uIState = useAppSelector(selectUIState);
 
