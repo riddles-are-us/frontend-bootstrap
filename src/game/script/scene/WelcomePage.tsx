@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import "./WelcomePage.css";
-import background from "../../images/scene/welcome_page/welcome_bg.png";
+import background from "../../image/scene/welcome_page/welcome_bg.png";
 import TemplateAdjustableImageTextButton from "../template/TemplateAdjustableImageTextButton";
 
 interface Props {

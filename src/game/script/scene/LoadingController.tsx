@@ -32,7 +32,7 @@ export function LoadingController() {
   }, [inc]);
 
   const requireContext = require.context(
-    "../../images",
+    "../../image",
     true,
     /\.(png|jpg|jpeg|gif)$/
   );

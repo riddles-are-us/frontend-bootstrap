@@ -1,6 +1,6 @@
 import "./App.css";
-import { LoadingController } from "./game/scripts/scene/LoadingController";
-import "./fonts/fonts.css";
+import { LoadingController } from "./game/script/scene/LoadingController";
+import "./font/fonts.css";
 
 function App() {
   return <LoadingController />;
