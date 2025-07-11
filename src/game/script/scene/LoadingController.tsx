@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import {
   selectConnectState,
@@ -15,11 +15,16 @@ export function LoadingController() {
   const userState = useAppSelector(selectNullableUserState);
   const config = useAppSelector(selectNullableConfig);
   const connectState = useAppSelector(selectConnectState);
+  const connectStateRef = useRef(connectState);
+  const userStateRef = useRef(userState);
   const [inc, setInc] = useState(0);
 
   // update State
   function updateState() {
-    if (connectState == ConnectState.Init && userState == null) {
+    if (
+      connectStateRef.current == ConnectState.Init &&
+      userStateRef.current == null
+    ) {
       dispatch(queryInitialState("1"));
     }
     setInc(inc + 1);
@@ -30,6 +35,14 @@ export function LoadingController() {
       updateState();
     }, 5000);
   }, [inc]);
+
+  useEffect(() => {
+    connectStateRef.current = connectState;
+  }, [connectState]);
+
+  useEffect(() => {
+    userStateRef.current = userState;
+  }, [userState]);
 
   const requireContext = require.context(
     "../../image",
