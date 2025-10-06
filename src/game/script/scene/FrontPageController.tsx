@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { selectConnectState, setConnectState } from "../../../data/state";
 import LoadingPage from "./LoadingPage";
 import WelcomePage from "./WelcomePage";
+import { pushError } from "../../../data/error";
 
 const CREATE_PLAYER = 1n;
 
@@ -23,7 +24,7 @@ interface Props {
   onStartGameplay: () => void;
 }
 
-export function ConnectController({
+export function FrontPageController({
   imageUrls,
   onStart,
   onStartGameplay,
@@ -41,34 +42,19 @@ export function ConnectController({
   } = useWalletContext();
   const connectState = useAppSelector(selectConnectState);
   const [queryingLogin, setQueryingLogin] = useState(false);
-
+  const [isServerNoResponse, setIsServerNoResponse] = useState(false);
+  const [autoLogin, setAutoLogin] = useState(false);
   // RainbowKit connect modal hook
-  const { openConnectModal } = useConnectModal();
-  const showedModal = useRef(false);
+  const { connectModalOpen, openConnectModal } = useConnectModal();
+
+  console.log("connectModalOpen", connectModalOpen);
 
   useEffect(() => {
-    if (!isConnected && !showedModal.current) {
-      showedModal.current = true;
-      openConnectModal?.();
-    }
-  }, [isConnected, openConnectModal]);
-
-  useEffect(() => {
-    if (isConnected && !l1Account) {
+    if (isConnected) {
       connectL1();
+      setAutoLogin(true);
     }
-  }, [isConnected, l1Account, connectL1]);
-
-  const prevIsConnected = useRef(isConnected);
-
-  // Show connect modal automatically on mount if wallet not connected
-  useEffect(() => {
-    if (prevIsConnected.current && !isConnected) {
-      showedModal.current = false;
-      openConnectModal?.();
-    }
-    prevIsConnected.current = isConnected;
-  }, [l1Account, openConnectModal]);
+  }, [isConnected]);
 
   async function preloadImages(imageUrls: string[]): Promise<void> {
     let loadedCount = 0;
@@ -95,6 +81,7 @@ export function ConnectController({
       console.log(`${imageUrls.length} images loaded`);
     } catch (error) {
       console.error("Error loading images:", error);
+      dispatch(pushError("Error loading images:" + String(error)));
     }
   };
 
@@ -107,7 +94,13 @@ export function ConnectController({
   }, [l1Account]);
 
   useEffect(() => {
-    console.log("connectState", connectState);
+    if (connectModalOpen == false) {
+      setQueryingLogin(false);
+    }
+  }, [connectModalOpen]);
+
+  useEffect(() => {
+    console.log("ConnectState", ConnectState[connectState]);
     if (connectState == ConnectState.OnStart) {
       onStart().then(() => {
         dispatch(setConnectState(ConnectState.Preloading));
@@ -116,53 +109,88 @@ export function ConnectController({
       loadImages().then(() => {
         dispatch(getConfig());
       });
-    } else if (connectState == ConnectState.InstallPlayer) {
-      const command = createCommand(0n, CREATE_PLAYER, []);
-      dispatch(
-        sendTransaction({
-          cmd: command,
-          prikey: l2Account!.getPrivateKey(),
-        })
-      );
     }
   }, [connectState]);
 
-  const onLogin = async () => {
-    if (!queryingLogin) {
-      await connectL2();
+  const onClickConnectWallet = async () => {
+    if (!queryingLogin && openConnectModal) {
+      openConnectModal();
       setQueryingLogin(true);
     }
   };
 
-  const onStartGame = () => {
+  const onClickPlay = async () => {
+    try {
+      await connectL2();
+    } catch (e) {
+      console.error("connectL2 error", e);
+      setAutoLogin(false);
+      disconnect();
+    }
+  };
+
+  useEffect(() => {
     if (!l2Account) {
       return;
     }
 
-    dispatch(queryState(l2Account!.getPrivateKey()));
-    onStartGameplay();
-  };
+    dispatch(queryState(l2Account!.getPrivateKey())).then(async (action) => {
+      if (queryState.fulfilled.match(action)) {
+        onStartGameplay();
+      } else if (queryState.rejected.match(action)) {
+        const command = createCommand(0n, CREATE_PLAYER, []);
+        dispatch(
+          sendTransaction({
+            cmd: command,
+            prikey: l2Account!.getPrivateKey(),
+          })
+        ).then(async (action) => {
+          if (
+            sendTransaction.fulfilled.match(action) ||
+            action.payload == "PlayerAlreadyExist"
+          ) {
+            dispatch(queryState(l2Account.getPrivateKey()));
+            onStartGameplay();
+          } else if (sendTransaction.rejected.match(action)) {
+            const message = "start game Error: " + action.payload;
+            console.error(message);
+            dispatch(pushError(message));
+            if (
+              action.payload == "SendTransactionError AxiosError: Network Error"
+            ) {
+              setIsServerNoResponse(true);
+            }
+          }
+        });
+      }
+    });
+  }, [l2Account]);
 
-  if (connectState == ConnectState.Init) {
+  if (isServerNoResponse) {
+    return <LoadingPage message={"Server No Response"} progress={0} />;
+  } else if (connectState == ConnectState.Init) {
     return <LoadingPage message={"Initialising"} progress={0} />;
   } else if (connectState == ConnectState.OnStart) {
     return <LoadingPage message={"Starting"} progress={0} />;
   } else if (connectState == ConnectState.Preloading) {
     return <LoadingPage message={"Preloading Textures"} progress={progress} />;
-  } else if (connectState == ConnectState.Idle) {
+  } else if (connectState == ConnectState.ConnectionError) {
+    return <LoadingPage message={"Creating Player"} progress={0} />;
+  } else if (
+    connectState == ConnectState.Idle ||
+    connectState == ConnectState.QueryConfig ||
+    connectState == ConnectState.QueryState ||
+    connectState == ConnectState.WaitingTxReply
+  ) {
     return (
       <WelcomePage
-        isLogin={l2Account != null}
-        onLogin={onLogin}
-        onStartGame={onStartGame}
+        isLogin={l1Account != null}
+        disabledLoginButton={autoLogin || queryingLogin}
+        disabledPlayButton={false}
+        onClickConnectWallet={onClickConnectWallet}
+        onClickPlay={onClickPlay}
       />
     );
-  } else if (connectState == ConnectState.QueryConfig) {
-    return <LoadingPage message={"Querying Config"} progress={0} />;
-  } else if (connectState == ConnectState.QueryState) {
-    return <LoadingPage message={"Querying State"} progress={0} />;
-  } else if (connectState == ConnectState.ConnectionError) {
-    return <LoadingPage message={"Error"} progress={0} />;
   } else {
     return <LoadingPage message={"Loading"} progress={0} />;
   }

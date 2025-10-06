@@ -3,15 +3,25 @@ import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import "./WelcomePage.css";
 import background from "../../image/scene/welcome_page/welcome_bg.png";
 import TemplateAdjustableImageTextButton from "../template/TemplateAdjustableImageTextButton";
+import { selectNullableConfig } from "../../../data/state";
 
 interface Props {
   isLogin: boolean;
-  onLogin: () => void;
-  onStartGame: () => void;
+  disabledLoginButton: boolean;
+  disabledPlayButton: boolean;
+  onClickConnectWallet: () => void;
+  onClickPlay: () => void;
 }
 
-const WelcomePage = ({ isLogin, onLogin, onStartGame }: Props) => {
+const WelcomePage = ({
+  isLogin,
+  disabledLoginButton,
+  disabledPlayButton,
+  onClickConnectWallet,
+  onClickPlay,
+}: Props) => {
   const dispatch = useAppDispatch();
+  const serverVersion = useAppSelector(selectNullableConfig)?.version || "N/A";
   const textRef = useRef<HTMLParagraphElement>(null);
   const [fontSize, setFontSize] = useState<number>(0);
 
@@ -31,24 +41,22 @@ const WelcomePage = ({ isLogin, onLogin, onStartGame }: Props) => {
     };
   }, []);
 
-  const onClickConnectWallet = () => {
-    onLogin();
-  };
-
-  const onClickPlay = () => {
-    onStartGame();
-  };
-
   return (
     <div className="welcome-page-container">
       <img className="welcome-page-background" src={background} />
+      <p
+        className="welcome-page-server-version-text"
+        style={{ fontSize: fontSize }}
+      >
+        {`Server Version: ${serverVersion}`}
+      </p>
       {isLogin ? (
         <div className="welcome-page-panel-play-button">
           <TemplateAdjustableImageTextButton
             id={1}
             text={"Play"}
             onClick={onClickPlay}
-            isDisabled={false}
+            isDisabled={disabledPlayButton}
           />
         </div>
       ) : (
@@ -57,7 +65,7 @@ const WelcomePage = ({ isLogin, onLogin, onStartGame }: Props) => {
             id={2}
             text={"Connect Wallet"}
             onClick={onClickConnectWallet}
-            isDisabled={false}
+            isDisabled={disabledLoginButton}
           />
         </div>
       )}
