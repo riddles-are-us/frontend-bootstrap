@@ -1,6 +1,6 @@
-import normalImage from "../../image/button/template_image_text/tab.png";
-import hoverImage from "../../image/button/template_image_text/tab_hv.png";
-import clickImage from "../../image/button/template_image_text/tab_click.png";
+import normalImage from "../../images/buttons/template_image_text/tab.png";
+import hoverImage from "../../images/buttons/template_image_text/tab_hv.png";
+import clickImage from "../../images/buttons/template_image_text/tab_click.png";
 import ImageTextButton from "../common/ImageTextButton";
 
 interface Props {

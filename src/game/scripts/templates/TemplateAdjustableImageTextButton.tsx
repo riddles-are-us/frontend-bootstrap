@@ -1,12 +1,12 @@
-import leftNormalImage from "../../image/button/template_adjustable_image_text/left.png";
-import midNormalImage from "../../image/button/template_adjustable_image_text/mid.png";
-import rightNormalImage from "../../image/button/template_adjustable_image_text/right.png";
-import leftHoverImage from "../../image/button/template_adjustable_image_text/left_hv.png";
-import midHoverImage from "../../image/button/template_adjustable_image_text/mid_hv.png";
-import rightHoverImage from "../../image/button/template_adjustable_image_text/right_hv.png";
-import leftClickImage from "../../image/button/template_adjustable_image_text/left_click.png";
-import midClickImage from "../../image/button/template_adjustable_image_text/mid_click.png";
-import rightClickImage from "../../image/button/template_adjustable_image_text/right_click.png";
+import leftNormalImage from "../../images/buttons/template_adjustable_image_text/left.png";
+import midNormalImage from "../../images/buttons/template_adjustable_image_text/mid.png";
+import rightNormalImage from "../../images/buttons/template_adjustable_image_text/right.png";
+import leftHoverImage from "../../images/buttons/template_adjustable_image_text/left_hv.png";
+import midHoverImage from "../../images/buttons/template_adjustable_image_text/mid_hv.png";
+import rightHoverImage from "../../images/buttons/template_adjustable_image_text/right_hv.png";
+import leftClickImage from "../../images/buttons/template_adjustable_image_text/left_click.png";
+import midClickImage from "../../images/buttons/template_adjustable_image_text/mid_click.png";
+import rightClickImage from "../../images/buttons/template_adjustable_image_text/right_click.png";
 import AdjustableImageTextButton from "../common/AdjustableImageTextButton";
 
 interface Props {

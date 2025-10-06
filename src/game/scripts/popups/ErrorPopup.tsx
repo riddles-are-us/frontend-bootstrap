@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import "./ErrorPopup.css";
-import background from "../../image/popup/pop_frame.png";
+import background from "../../images/popups/pop_frame.png";
 import { useAppDispatch } from "../../../app/hooks";
 import { popError } from "../../../data/error";
 import { getTextShadowStyle } from "../common/Utility";
-import TemplateImageTextButton from "../template/TemplateImageTextButton";
+import TemplateImageTextButton from "../templates/TemplateImageTextButton";
 
 interface Props {
   message: string;

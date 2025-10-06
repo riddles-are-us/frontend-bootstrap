@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import "./WelcomePage.css";
-import background from "../../image/scene/welcome_page/welcome_bg.png";
-import TemplateAdjustableImageTextButton from "../template/TemplateAdjustableImageTextButton";
+import background from "../../images/scenes/welcome_page/welcome_bg.png";
+import TemplateAdjustableImageTextButton from "../templates/TemplateAdjustableImageTextButton";
 import { selectNullableConfig } from "../../../data/state";
 
 interface Props {

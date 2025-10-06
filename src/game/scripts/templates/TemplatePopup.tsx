@@ -1,5 +1,5 @@
 import { useState } from "react";
-import background from "../../image/popup/pop_frame.png";
+import background from "../../images/popups/pop_frame.png";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import "./TemplatePopup.css";
 import { selectUIState, setUIState, UIStateType } from "../../../data/ui";

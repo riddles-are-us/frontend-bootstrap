@@ -16,7 +16,7 @@ import { ConnectState } from "zkwasm-minirollup-browser";
 import { FrontPageController } from "./FrontPageController";
 import { createCommand } from "zkwasm-minirollup-rpc";
 import { selectError } from "../../../data/error";
-import ErrorPopup from "../popup/ErrorPopup";
+import ErrorPopup from "../popups/ErrorPopup";
 
 const CREATE_PLAYER = 1n;
 
@@ -83,7 +83,7 @@ export function InitController() {
   }, [l2Account]);
 
   const requireContext = require.context(
-    "../../image",
+    "../../images",
     true,
     /\.(png|jpg|jpeg|gif)$/
   );

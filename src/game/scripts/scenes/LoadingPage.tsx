@@ -1,8 +1,8 @@
 import "./LoadingPage.css";
-import connecting_background from "../../image/scene/loading_page/connecting_bg.png";
-import loading_background from "../../image/scene/loading_page/loading_bg.png";
-import frame from "../../image/scene/loading_page/frame.png";
-import bar from "../../image/scene/loading_page/bar.png";
+import connecting_background from "../../images/scenes/loading_page/connecting_bg.png";
+import loading_background from "../../images/scenes/loading_page/loading_bg.png";
+import frame from "../../images/scenes/loading_page/frame.png";
+import bar from "../../images/scenes/loading_page/bar.png";
 
 interface Props {
   message: string;
