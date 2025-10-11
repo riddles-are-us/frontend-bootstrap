@@ -13,7 +13,7 @@ export interface GlobalState {
 }
 
 const initialState: PropertiesState<PlayerInfo, GlobalState, any> = {
-		connectState: ConnectState.Init,
+		connectState: ConnectState.OnStart,
 		isConnected: false,
 		userState: null,
 		lastError: null,

@@ -86,14 +86,6 @@ export function FrontPageController({
   };
 
   useEffect(() => {
-    if (l1Account) {
-      if (connectState == ConnectState.Init) {
-        dispatch(setConnectState(ConnectState.OnStart));
-      }
-    }
-  }, [l1Account]);
-
-  useEffect(() => {
     if (connectModalOpen == false) {
       setQueryingLogin(false);
     }
