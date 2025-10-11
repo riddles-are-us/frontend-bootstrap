@@ -4,6 +4,7 @@ import {
   selectConnectState,
   selectNullableConfig,
   selectNullableUserState,
+  setConnectState,
 } from "../../../data/state";
 import Gameplay from "./Gameplay";
 import {
@@ -17,8 +18,7 @@ import { FrontPageController } from "./FrontPageController";
 import { createCommand } from "zkwasm-minirollup-rpc";
 import { selectError } from "../../../data/error";
 import ErrorPopup from "../popups/ErrorPopup";
-
-const CREATE_PLAYER = 1n;
+import { setUIState, UIStateType } from "../../../data/ui";
 
 export function InitController() {
   const dispatch = useAppDispatch();
@@ -36,7 +36,7 @@ export function InitController() {
   // update State
   function updateState() {
     if (
-      connectStateRef.current == ConnectState.Init &&
+      connectStateRef.current == ConnectState.OnStart &&
       userStateRef.current == null
     ) {
       dispatch(queryInitialState("1"));
@@ -47,16 +47,7 @@ export function InitController() {
       dispatch(queryState(l2AccountRef.current.getPrivateKey())).then(
         (action) => {
           if (queryState.fulfilled.match(action)) {
-            console.log("initial queryState success");
-          } else {
-            console.log("initial queryState failed");
-            const command = createCommand(0n, CREATE_PLAYER, []);
-            dispatch(
-              sendTransaction({
-                cmd: command,
-                prikey: l2AccountRef.current.getPrivateKey(),
-              })
-            );
+            console.log("queryState success");
           }
         }
       );
@@ -95,6 +86,8 @@ export function InitController() {
 
   const onStartGameplay = () => {
     setStartGameplay(true);
+    dispatch(setUIState({ type: UIStateType.Idle }));
+    dispatch(setConnectState(ConnectState.Idle));
   };
 
   if (

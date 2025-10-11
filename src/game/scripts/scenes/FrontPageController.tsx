@@ -11,7 +11,11 @@ import {
 } from "zkwasm-minirollup-browser";
 import { createCommand } from "zkwasm-minirollup-rpc";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { selectConnectState, setConnectState } from "../../../data/state";
+import {
+  selectConnectState,
+  selectNullableUserState,
+  setConnectState,
+} from "../../../data/state";
 import LoadingPage from "./LoadingPage";
 import WelcomePage from "./WelcomePage";
 import { pushError } from "../../../data/error";
@@ -42,12 +46,12 @@ export function FrontPageController({
   } = useWalletContext();
   const connectState = useAppSelector(selectConnectState);
   const [queryingLogin, setQueryingLogin] = useState(false);
+  const [queryingL2Login, setQueryingL2Login] = useState(false);
   const [isServerNoResponse, setIsServerNoResponse] = useState(false);
   const [autoLogin, setAutoLogin] = useState(false);
   // RainbowKit connect modal hook
   const { connectModalOpen, openConnectModal } = useConnectModal();
-
-  console.log("connectModalOpen", connectModalOpen);
+  const userState = useAppSelector(selectNullableUserState);
 
   useEffect(() => {
     if (isConnected) {
@@ -86,13 +90,12 @@ export function FrontPageController({
   };
 
   useEffect(() => {
-    if (connectModalOpen == false) {
+    if (connectModalOpen == false && queryingLogin) {
       setQueryingLogin(false);
     }
   }, [connectModalOpen]);
 
   useEffect(() => {
-    console.log("ConnectState", ConnectState[connectState]);
     if (connectState == ConnectState.OnStart) {
       onStart().then(() => {
         dispatch(setConnectState(ConnectState.Preloading));
@@ -106,16 +109,21 @@ export function FrontPageController({
 
   const onClickConnectWallet = async () => {
     if (!queryingLogin && openConnectModal) {
-      openConnectModal();
       setQueryingLogin(true);
+
+      setTimeout(() => {
+        openConnectModal();
+      }, 50); // 50ms delay usually enough for mobile WebView
     }
   };
 
   const onClickPlay = async () => {
     try {
+      setQueryingL2Login(true);
       await connectL2();
     } catch (e) {
       console.error("connectL2 error", e);
+      setQueryingL2Login(false);
       setAutoLogin(false);
       disconnect();
     }
@@ -126,34 +134,38 @@ export function FrontPageController({
       return;
     }
 
+    console.log("try to create player Init", l2Account!.getPrivateKey());
     dispatch(queryState(l2Account!.getPrivateKey())).then(async (action) => {
       if (queryState.fulfilled.match(action)) {
-        onStartGameplay();
-      } else if (queryState.rejected.match(action)) {
-        const command = createCommand(0n, CREATE_PLAYER, []);
-        dispatch(
-          sendTransaction({
-            cmd: command,
-            prikey: l2Account!.getPrivateKey(),
-          })
-        ).then(async (action) => {
-          if (
-            sendTransaction.fulfilled.match(action) ||
-            action.payload == "PlayerAlreadyExist"
-          ) {
-            dispatch(queryState(l2Account.getPrivateKey()));
-            onStartGameplay();
-          } else if (sendTransaction.rejected.match(action)) {
-            const message = "start game Error: " + action.payload;
-            console.error(message);
-            dispatch(pushError(message));
+        if (action.payload?.player == null) {
+          const command = createCommand(0n, CREATE_PLAYER, []);
+          dispatch(
+            sendTransaction({
+              cmd: command,
+              prikey: l2Account!.getPrivateKey(),
+            })
+          ).then(async (action) => {
             if (
-              action.payload == "SendTransactionError AxiosError: Network Error"
+              sendTransaction.fulfilled.match(action) ||
+              action.payload == "PlayerAlreadyExist"
             ) {
-              setIsServerNoResponse(true);
+              onStartGameplay();
+            } else if (sendTransaction.rejected.match(action)) {
+              const message = "start game Error: " + action.payload;
+              console.error(message);
+              dispatch(pushError(message));
+              if (
+                action.payload ==
+                "SendTransactionError AxiosError: Network Error"
+              ) {
+                setIsServerNoResponse(true);
+              }
             }
-          }
-        });
+          });
+        } else {
+          onStartGameplay();
+        }
+        // dispatch(queryState(l2Account.getPrivateKey()));
       }
     });
   }, [l2Account]);
@@ -176,9 +188,9 @@ export function FrontPageController({
   ) {
     return (
       <WelcomePage
-        isLogin={l1Account != null}
+        isLogin={l1Account != null || queryingL2Login}
         disabledLoginButton={autoLogin || queryingLogin}
-        disabledPlayButton={false}
+        disabledPlayButton={queryingL2Login}
         onClickConnectWallet={onClickConnectWallet}
         onClickPlay={onClickPlay}
       />
